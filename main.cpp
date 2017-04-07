@@ -31,12 +31,6 @@ struct mul_op : i_binary_op {
         }
 };
 
-struct div_op : i_binary_op {
-        vecint_t operator()(vecint_t left, vecint_t right) final {
-                return _mm256_mul_epi32(left, right); // FIXME wrong code!
-        }
-};
-
 int main() {
         constexpr vecint_t left = {127, 945, 767, 6868};
         constexpr vecint_t right = {5656, 4545, 67576, 987654321};
