@@ -1,6 +1,43 @@
 #include <iostream>
+#include <immintrin.h>
+#include <emmintrin.h>
+
+using vecint_t = __m256i;
+
+inline vecint_t negative(vecint_t value) {
+        constexpr vecint_t __neg = {-1, -1, -1, -1};
+        return _mm256_mul_epi32(value, __neg);
+}
+
+struct i_binary_op {
+        virtual vecint_t operator()(vecint_t left, vecint_t right) = 0;
+};
+
+struct add_op : i_binary_op {
+        vecint_t operator()(vecint_t left, vecint_t right) final {
+                return _mm256_add_epi32(left, right);
+        }
+};
+
+struct sub_op : i_binary_op {
+        vecint_t operator()(vecint_t left, vecint_t right) final {
+                return _mm256_add_epi32(left, negative(right));
+        }
+};
+
+struct mul_op : i_binary_op {
+        vecint_t operator()(vecint_t left, vecint_t right) final {
+                return _mm256_mul_epi32(left, right);
+        }
+};
+
+struct div_op : i_binary_op {
+        vecint_t operator()(vecint_t left, vecint_t right) final {
+                return _mm256_mul_epi32(left, negative(right));
+        }
+};
 
 int main() {
-        std::cout << "Hello, world!" << std::endl;
+
         return 0;
 }
