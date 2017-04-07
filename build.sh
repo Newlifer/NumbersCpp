@@ -1,1 +1,1 @@
-g++ main.cpp -std=c++14 -mavx
+g++ main.cpp -std=c++14 -mavx -mavx2
