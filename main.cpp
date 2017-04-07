@@ -9,6 +9,10 @@ inline vecint_t negative(vecint_t value) {
         return _mm256_mul_epi32(value, __neg);
 }
 
+inline vecint_t numbers_lengths(vecint_t value) {
+        return vecint_t{1, 1, 1, 1}; // FIXME implement it
+}
+
 struct i_binary_op {
         virtual vecint_t operator()(vecint_t left, vecint_t right) = 0;
 };
@@ -28,6 +32,15 @@ struct sub_op : i_binary_op {
 struct mul_op : i_binary_op {
         vecint_t operator()(vecint_t left, vecint_t right) final {
                 return _mm256_mul_epi32(left, right);
+        }
+};
+
+struct concat_op : i_binary_op {
+        vecint_t operator()(vecint_t left, vecint_t right) final {
+                const auto shift_distances = numbers_lengths(right);
+                constexpr vecint_t multiplier = {10, 10, 10, 10};
+                const auto shifted = _mm256_mul_epi32(left, _mm256_mul_epi32(shift_distances, multiplier));
+                return _mm256_add_epi32(shifted, right);
         }
 };
 
