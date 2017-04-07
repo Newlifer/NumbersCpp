@@ -21,7 +21,7 @@ struct add_op : i_binary_op {
 
 struct sub_op : i_binary_op {
         vecint_t operator()(vecint_t left, vecint_t right) final {
-                return _mm256_add_epi32(left, negative(right));
+                return _mm256_sub_epi32(left, right);
         }
 };
 
@@ -33,7 +33,7 @@ struct mul_op : i_binary_op {
 
 struct div_op : i_binary_op {
         vecint_t operator()(vecint_t left, vecint_t right) final {
-                return _mm256_mul_epi32(left, negative(right));
+                return _mm256_mul_epi32(left, right); // FIXME wrong code!
         }
 };
 
