@@ -38,6 +38,12 @@ struct div_op : i_binary_op {
 };
 
 int main() {
+        constexpr vecint_t left = {127, 945, 767, 6868};
+        constexpr vecint_t right = {5656, 4545, 67576, 987654321};
+        sub_op substr;
 
+        for(std::size_t i = 0; i < 100'000'000; ++i) {
+                substr(left, right);
+        }
         return 0;
 }
